@@ -4,8 +4,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "salesDoc")
-public class Sales_Document {
+@Table(name = "itemsDoc")
+public class Items_Document {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -13,40 +14,40 @@ public class Sales_Document {
     @Column(name = "date")
     private Date dateTime;
 
-    @Column(name = "file_type")
+    @Column(name = "item_file_type")
     private  String fileType;
 
-    @Column(name = "file_name")
-    private String salesDocumentFileName;
+    @Column(name = "item_file_name")
+    private String itemsDocumentFileName;
 
-    @Column(name = "sales_category")
+    @Column(name = "item_category")
     private String category;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "file_size")
+    @Column(name = "item_file_size")
     private long fileSize;
-    @Column(name="sales_person")
-    private String salesPerson;
+    @Column(name="items_person")
+    private String itemManagementPerson;
 
-    @Column(name = "file")
+    @Column(name = "item_file")
     @Lob
-    private byte[] salesDocumentFile;
+    private byte[] itemsDocumentFile;
 
-    public Sales_Document(){
+    public Items_Document(){
 
     }
 
-    public Sales_Document(Date dateTime, String fileType, String salesDocumentFileName, String category, String description, long fileSize, String salesPerson, byte[] salesDocumentFile) {
+    public Items_Document(Date dateTime, String fileType, String itemsDocumentFileName, String category, String description, long fileSize, String itemManagementPerson, byte[] itemsDocumentFile) {
         this.dateTime = dateTime;
         this.fileType = fileType;
-        this.salesDocumentFileName = salesDocumentFileName;
+        this.itemsDocumentFileName = itemsDocumentFileName;
         this.category = category;
         this.description = description;
         this.fileSize = fileSize;
-        this.salesPerson = salesPerson;
-        this.salesDocumentFile = salesDocumentFile;
+        this.itemManagementPerson = itemManagementPerson;
+        this.itemsDocumentFile = itemsDocumentFile;
     }
 
     public long getId() {
@@ -73,12 +74,12 @@ public class Sales_Document {
         this.fileType = fileType;
     }
 
-    public String getSalesDocumentFileName() {
-        return salesDocumentFileName;
+    public String getItemsDocumentFileName() {
+        return itemsDocumentFileName;
     }
 
-    public void setSalesDocumentFileName(String salesDocumentFileName) {
-        this.salesDocumentFileName = salesDocumentFileName;
+    public void setItemsDocumentFileName(String itemsDocumentFileName) {
+        this.itemsDocumentFileName = itemsDocumentFileName;
     }
 
     public String getCategory() {
@@ -105,20 +106,19 @@ public class Sales_Document {
         this.fileSize = fileSize;
     }
 
-    public String getSalesPerson() {
-        return salesPerson;
+    public String getItemManagementPerson() {
+        return itemManagementPerson;
     }
 
-    public void setSalesPerson(String salesPerson) {
-        this.salesPerson = salesPerson;
+    public void setItemManagementPerson(String itemManagementPerson) {
+        this.itemManagementPerson = itemManagementPerson;
     }
 
-    public byte[] getSalesDocumentFile() {
-        return salesDocumentFile;
+    public byte[] getItemsDocumentFile() {
+        return itemsDocumentFile;
     }
 
-    public void setSalesDocumentFile(byte[] salesDocumentFile) {
-        this.salesDocumentFile = salesDocumentFile;
+    public void setItemsDocumentFile(byte[] itemsDocumentFile) {
+        this.itemsDocumentFile = itemsDocumentFile;
     }
-
 }

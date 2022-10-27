@@ -6,6 +6,10 @@ public class ResponseAllFiles {
 
     private Date date;
     private String fileName;
+
+    private String category;
+
+    private String description;
     private String salesPerson;
     private String fileType;
     private long size;
@@ -14,9 +18,11 @@ public class ResponseAllFiles {
 
     }
 
-    public ResponseAllFiles(Date date, String fileName, String salesPerson, String fileType, long size) {
+    public ResponseAllFiles(Date date, String fileName, String category, String description, String salesPerson, String fileType, long size) {
         this.date = date;
         this.fileName = fileName;
+        this.category = category;
+        this.description = description;
         this.salesPerson = salesPerson;
         this.fileType = fileType;
         this.size = size;
@@ -36,6 +42,22 @@ public class ResponseAllFiles {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getSalesPerson() {

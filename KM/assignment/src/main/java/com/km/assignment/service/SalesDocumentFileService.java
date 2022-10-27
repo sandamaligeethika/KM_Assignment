@@ -21,7 +21,7 @@ public class SalesDocumentFileService {
     @Autowired
     private SalesDocumentRepository salesDocumentRepository;
 
-    public Sales_Document storeFile(MultipartFile file, String author){
+    public Sales_Document storeFile(MultipartFile file, String category, String description, String author){
 
         //Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -32,7 +32,7 @@ public class SalesDocumentFileService {
                 throw new DocumentStorageException("Sorry, " + fileName + " contains invalid characters");
             }
 
-            Sales_Document salesDocument = new Sales_Document(new Date(), file.getContentType(), fileName, file.getSize(), author, file.getBytes());
+            Sales_Document salesDocument = new Sales_Document(new Date(), file.getContentType(), fileName, category, description, file.getSize(), author, file.getBytes());
 
             return salesDocumentRepository.save(salesDocument);
         } catch (IOException e) {
@@ -56,6 +56,8 @@ public class SalesDocumentFileService {
             ResponseAllFiles responseAllFile = new ResponseAllFiles();
             responseAllFile.setDate(document.getDateTime());
             responseAllFile.setFileName(document.getSalesDocumentFileName());
+            responseAllFile.setCategory(document.getCategory());
+            responseAllFile.setDescription(document.getDescription());
             responseAllFile.setFileType(document.getFileType());
             responseAllFile.setSalesPerson(document.getSalesPerson());
             responseAllFile.setSize(document.getFileSize());

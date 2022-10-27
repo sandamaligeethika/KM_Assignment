@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sales/files/")
@@ -32,15 +35,15 @@ public class SalesDocumentController {
 
     //upload files
     @PostMapping("/upload")
-    public Response uploadSalesFile(@RequestParam("file") MultipartFile file, @RequestParam("author") String author) {
-        Sales_Document salesDocument = salesDocumentFileService.storeFile(file, author);
+    public Response uploadSalesFile(@RequestParam("file") MultipartFile file,@RequestParam("category") String category, @RequestParam("description") String description, @RequestParam("author") String author) {
+        Sales_Document salesDocument = salesDocumentFileService.storeFile(file, category, description, author);
 
         String salesFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(salesDocument.getSalesDocumentFileName())
                 .toUriString();
 
-        return new Response(salesDocument.getSalesDocumentFileName(),salesFileDownloadUri,file.getContentType(),file.getSize());
+        return new Response(salesDocument.getSalesDocumentFileName(),salesDocument.getCategory(), salesDocument.getDescription(),salesFileDownloadUri,file.getContentType(),file.getSize());
     }
 
     //get file by id
@@ -70,7 +73,7 @@ public class SalesDocumentController {
         Sales_Document salesDocument = salesDocumentRepository.findById(fileId)
                 .orElseThrow(()-> new ResourceNotFoundException("Sales File " + fileId +" does not exist."));
 
-        salesDocument.setDateTime(salesFileDetails.getDateTime());
+        salesDocument.setDateTime(new Date());
         salesDocument.setFileType(salesFileDetails.getFileType());
         salesDocument.setSalesDocumentFileName(salesFileDetails.getSalesDocumentFileName());
         salesDocument.setFileSize(salesFileDetails.getFileSize());
@@ -80,5 +83,18 @@ public class SalesDocumentController {
         Sales_Document updatedSalesFile = salesDocumentRepository.save(salesDocument);
 
         return ResponseEntity.ok(updatedSalesFile);
+    }
+
+    //delete files
+    @DeleteMapping("file/{fileId}")
+    public ResponseEntity<Map<String,Boolean>> deleteSalesFiles(@PathVariable long fileId){
+        Sales_Document salesDocument = salesDocumentRepository.findById(fileId)
+                .orElseThrow(()-> new ResourceNotFoundException("Sales File " + fileId +" does not exist."));
+
+        salesDocumentRepository.delete(salesDocument);
+
+        Map<String,Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
     }
 }
