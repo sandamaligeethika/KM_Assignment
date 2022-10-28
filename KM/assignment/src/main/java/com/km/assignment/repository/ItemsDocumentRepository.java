@@ -1,12 +1,12 @@
 package com.km.assignment.repository;
 
-import com.km.assignment.model.Items_Document;
+import com.km.assignment.model.ItemsDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ItemsDocumentRepository extends JpaRepository<Items_Document,Long> {
+public interface ItemsDocumentRepository extends JpaRepository<ItemsDocument,Long> {
 
     @Override
-    List<Items_Document> findAll();
+    List<ItemsDocument> findAll();
 }

@@ -1,6 +1,5 @@
 package com.km.assignment.repository;
 
-import com.km.assignment.model.Items_Document;
 import com.km.assignment.model.OrderDeliveryDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 

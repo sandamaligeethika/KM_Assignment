@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "orderDelivery")
-public class OrderDeliveryDocument {
+@Table(name = "itemsDoc")
+public class ItemsDocument {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,45 +14,45 @@ public class OrderDeliveryDocument {
   @Column(name = "date")
   private Date dateTime;
 
-  @Column(name = "file_type")
+  @Column(name = "item_file_type")
   private String fileType;
 
-  @Column(name = "file_name")
-  private String orderDeliveryDocumentFileName;
+  @Column(name = "item_file_name")
+  private String itemsDocumentFileName;
 
-  @Column(name = "order_delivery_category")
+  @Column(name = "item_category")
   private String category;
 
   @Column(name = "description")
   private String description;
 
-  @Column(name = "file_size")
+  @Column(name = "item_file_size")
   private long fileSize;
 
-  @Column(name = "order_delivery_person")
-  private String orderDeliveryPerson;
+  @Column(name = "items_person")
+  private String itemManagementPerson;
 
-  @Column(name = "file")
+  @Column(name = "item_file")
   private String uri;
 
-  public OrderDeliveryDocument() {}
+  public ItemsDocument() {}
 
-  public OrderDeliveryDocument(
+  public ItemsDocument(
       Date dateTime,
       String fileType,
-      String orderDeliveryDocumentFileName,
+      String itemsDocumentFileName,
       String category,
       String description,
       long fileSize,
-      String orderDeliveryPerson,
+      String itemManagementPerson,
       String uri) {
     this.dateTime = dateTime;
     this.fileType = fileType;
-    this.orderDeliveryDocumentFileName = orderDeliveryDocumentFileName;
+    this.itemsDocumentFileName = itemsDocumentFileName;
     this.category = category;
     this.description = description;
     this.fileSize = fileSize;
-    this.orderDeliveryPerson = orderDeliveryPerson;
+    this.itemManagementPerson = itemManagementPerson;
     this.uri = uri;
   }
 
@@ -80,12 +80,12 @@ public class OrderDeliveryDocument {
     this.fileType = fileType;
   }
 
-  public String getOrderDeliveryDocumentFileName() {
-    return orderDeliveryDocumentFileName;
+  public String getItemsDocumentFileName() {
+    return itemsDocumentFileName;
   }
 
-  public void setOrderDeliveryDocumentFileName(String orderDeliveryDocumentFileName) {
-    this.orderDeliveryDocumentFileName = orderDeliveryDocumentFileName;
+  public void setItemsDocumentFileName(String itemsDocumentFileName) {
+    this.itemsDocumentFileName = itemsDocumentFileName;
   }
 
   public String getCategory() {
@@ -112,12 +112,12 @@ public class OrderDeliveryDocument {
     this.fileSize = fileSize;
   }
 
-  public String getOrderDeliveryPerson() {
-    return orderDeliveryPerson;
+  public String getItemManagementPerson() {
+    return itemManagementPerson;
   }
 
-  public void setOrderDeliveryPerson(String orderDeliveryPerson) {
-    this.orderDeliveryPerson = orderDeliveryPerson;
+  public void setItemManagementPerson(String itemManagementPerson) {
+    this.itemManagementPerson = itemManagementPerson;
   }
 
   public String getUri() {

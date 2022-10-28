@@ -1,7 +1,7 @@
 package com.km.assignment.controller;
 
 import com.km.assignment.exception.ResourceNotFoundException;
-import com.km.assignment.model.Sales_Document;
+import com.km.assignment.model.SalesDocument;
 import com.km.assignment.payload.Response;
 import com.km.assignment.payload.ResponseAllFiles;
 import com.km.assignment.repository.SalesDocumentRepository;
@@ -10,91 +10,95 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/sales/files/")
 public class SalesDocumentController {
 
-    @Autowired
-    private SalesDocumentRepository salesDocumentRepository;
+  @Autowired private SalesDocumentRepository salesDocumentRepository;
 
-    @Autowired
-    private SalesDocumentFileService salesDocumentFileService;
+  @Autowired private SalesDocumentFileService salesDocumentFileService;
 
-    //get all Sales Documents
-    @GetMapping("/filesList")
-    public List<ResponseAllFiles> getAllSalesDocuments(){
-        return salesDocumentFileService.getAllFileDocuments();
-    }
+  // get all Sales Documents
+  @GetMapping("/filesList")
+  public List<ResponseAllFiles> getAllSalesDocuments() {
+    return salesDocumentFileService.getAllFileDocuments();
+  }
 
-    //upload files
-    @PostMapping("/upload")
-    public Response uploadSalesFile(@RequestParam("file") MultipartFile file,@RequestParam("category") String category, @RequestParam("description") String description, @RequestParam("author") String author) {
-        Sales_Document salesDocument = salesDocumentFileService.storeFile(file, category, description, author);
+  // upload files
+  @PostMapping("/upload")
+  public Response uploadSalesFile(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-        String salesFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(salesDocument.getSalesDocumentFileName())
-                .toUriString();
+    SalesDocument salesDocument =
+        salesDocumentFileService.uploadSalesDocument(file, category, description, author);
 
-        return new Response(salesDocument.getSalesDocumentFileName(),salesDocument.getCategory(), salesDocument.getDescription(),salesFileDownloadUri,file.getContentType(),file.getSize());
-    }
+    return new Response(
+        salesDocument.getSalesDocumentFileName(),
+        category,
+        description,
+        salesDocument.getUri(),
+        salesDocument.getFileType(),
+        salesDocument.getFileSize());
+  }
 
-    //get file by id
-    @GetMapping("/file/{fileId}")
-    public ResponseEntity<Sales_Document> getSalesFileById(@PathVariable Long fileId){
-        Sales_Document salesDocument = salesDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Sales File " + fileId +" does not exist."));
+  // get file by id
+  @GetMapping("/file/{fileId}")
+  public ResponseEntity<SalesDocument> getSalesFileById(@PathVariable Long fileId) {
+    SalesDocument salesDocument =
+        salesDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Sales File " + fileId + " does not exist."));
 
-        return ResponseEntity.ok(salesDocument);
-    }
+    return ResponseEntity.ok(salesDocument);
+  }
 
-    /*
-    @GetMapping("/file/{name}")
-    public ResponseEntity<List<Sales_Document>> getFileByName(@PathVariable String name) {
-        List<Sales_Document> salesDocuments =
-                salesDocumentRepository
-                        .findByFileLike(name)
-                        .orElseThrow(
-                                () -> new ResourceNotFoundException("Movies not found with name: " + name));
+  /*
+  @GetMapping("/file/{name}")
+  public ResponseEntity<List<Sales_Document>> getFileByName(@PathVariable String name) {
+      List<Sales_Document> salesDocuments =
+              salesDocumentRepository
+                      .findByFileLike(name)
+                      .orElseThrow(
+                              () -> new ResourceNotFoundException("Movies not found with name: " + name));
 
-        return ResponseEntity.ok(salesDocuments);
-    }*/
+      return ResponseEntity.ok(salesDocuments);
+  }*/
 
-    //update files
-    @PutMapping("/file/{fileId}")
-    public ResponseEntity<Sales_Document> updateSalesFiles(@PathVariable Long fileId, @RequestBody Sales_Document salesFileDetails){
-        Sales_Document salesDocument = salesDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Sales File " + fileId +" does not exist."));
+  // update files
+  @PutMapping("/file/{fileId}")
+  public ResponseEntity<SalesDocument> updateSalesFiles(
+      @PathVariable Long fileId,
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-        salesDocument.setDateTime(new Date());
-        salesDocument.setFileType(salesFileDetails.getFileType());
-        salesDocument.setSalesDocumentFileName(salesFileDetails.getSalesDocumentFileName());
-        salesDocument.setFileSize(salesFileDetails.getFileSize());
-        salesDocument.setSalesPerson(salesFileDetails.getSalesPerson());
-        salesDocument.setSalesDocumentFile(salesFileDetails.getSalesDocumentFile());
+    SalesDocument updatedSalesFile =
+        salesDocumentFileService.updateSalesFiles(fileId, file, category, description, author);
 
-        Sales_Document updatedSalesFile = salesDocumentRepository.save(salesDocument);
+    return ResponseEntity.ok(updatedSalesFile);
+  }
 
-        return ResponseEntity.ok(updatedSalesFile);
-    }
+  // delete files
+  @DeleteMapping("file/{fileId}")
+  public ResponseEntity<Map<String, Boolean>> deleteSalesFiles(@PathVariable long fileId) {
+    SalesDocument salesDocument =
+        salesDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Sales File " + fileId + " does not exist."));
 
-    //delete files
-    @DeleteMapping("file/{fileId}")
-    public ResponseEntity<Map<String,Boolean>> deleteSalesFiles(@PathVariable long fileId){
-        Sales_Document salesDocument = salesDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Sales File " + fileId +" does not exist."));
+    salesDocumentRepository.delete(salesDocument);
 
-        salesDocumentRepository.delete(salesDocument);
-
-        Map<String,Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
-    }
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("deleted", Boolean.TRUE);
+    return ResponseEntity.ok(response);
+  }
 }

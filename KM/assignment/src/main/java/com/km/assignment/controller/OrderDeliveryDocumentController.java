@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,51 +19,80 @@ import java.util.Map;
 @RequestMapping("/orderDelivery/files/")
 public class OrderDeliveryDocumentController {
 
-    @Autowired
-    private OrderDeliveryDocumentRepository orderDeliveryDocumentRepository;
+  @Autowired private OrderDeliveryDocumentRepository orderDeliveryDocumentRepository;
 
-    @Autowired
-    private OrderDeliveryDocumentFileService orderDeliveryDocumentFileService;
+  @Autowired private OrderDeliveryDocumentFileService orderDeliveryDocumentFileService;
 
-    //get all item documents
-    @GetMapping("/orderDeliveryFilesList")
-    public List<ResponseAllFiles> getAllOrderDeliveryDocuments(){
-        return orderDeliveryDocumentFileService.getOrderDeliveryAllFileDocuments();
-    }
+  // get all item documents
+  @GetMapping("/orderDeliveryFilesList")
+  public List<ResponseAllFiles> getAllOrderDeliveryDocuments() {
+    return orderDeliveryDocumentFileService.getOrderDeliveryAllFileDocuments();
+  }
 
+  // upload files
+  @PostMapping("/uploadOrderDeliveryFiles")
+  public Response uploadOrderDeliveryFile(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-    //upload files
-    @PostMapping("/uploadOrderDeliveryFiles")
-    public Response uploadOrderDeliveryFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String category, @RequestParam("description") String description, @RequestParam("author") String author) {
-        OrderDeliveryDocument orderDeliveryDocuments = orderDeliveryDocumentFileService.storeFile(file, category, description, author);
+    OrderDeliveryDocument orderDeliveryDocuments =
+        orderDeliveryDocumentFileService.uploadOrderDeliveryDocument(
+            file, category, description, author);
 
-        String salesFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(orderDeliveryDocuments.getOrderDeliveryDocumentFileName())
-                .toUriString();
+    return new Response(
+        orderDeliveryDocuments.getOrderDeliveryDocumentFileName(),
+        category,
+        description,
+        orderDeliveryDocuments.getUri(),
+        orderDeliveryDocuments.getFileType(),
+        orderDeliveryDocuments.getFileSize());
+  }
 
-        return new Response(orderDeliveryDocuments.getOrderDeliveryDocumentFileName(),orderDeliveryDocuments.getCategory(),orderDeliveryDocuments.getDescription(),salesFileDownloadUri,file.getContentType(),file.getSize());
-    }
+  // get file by id
+  @GetMapping("/orderDeliveryFile/{fileId}")
+  public ResponseEntity<OrderDeliveryDocument> getOrderDeliveryFileById(@PathVariable Long fileId) {
+    OrderDeliveryDocument orderDeliveryDocument =
+        orderDeliveryDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () ->
+                    new ResourceNotFoundException(
+                        "Order Delivery File " + fileId + " does not exist."));
 
-    //get file by id
-    @GetMapping("/orderDeliveryFile/{fileId}")
-    public ResponseEntity<OrderDeliveryDocument> getOrderDeliveryFileById(@PathVariable Long fileId){
-        OrderDeliveryDocument orderDeliveryDocument = orderDeliveryDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Order Delivery File " + fileId +" does not exist."));
+    return ResponseEntity.ok(orderDeliveryDocument);
+  }
 
-        return ResponseEntity.ok(orderDeliveryDocument);
-    }
+  // update files
+  @PutMapping("/orderDeliveryFile/{fileId}")
+  public ResponseEntity<OrderDeliveryDocument> updateOrderDeliveryFiles(
+      @PathVariable Long fileId,
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-    //delete files
-    @DeleteMapping("/orderDeliveryFile/{fileId}")
-    public ResponseEntity<Map<String,Boolean>> deleteOrderDeliveryFiles(@PathVariable long fileId){
-        OrderDeliveryDocument orderDeliveryDocument = orderDeliveryDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Items File " + fileId +" does not exist."));
+    OrderDeliveryDocument updatedSalesFile =
+        orderDeliveryDocumentFileService.updateOrderDeliveryFiles(
+            fileId, file, category, description, author);
 
-        orderDeliveryDocumentRepository.delete(orderDeliveryDocument);
+    return ResponseEntity.ok(updatedSalesFile);
+  }
 
-        Map<String,Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
-    }
+  // delete files
+  @DeleteMapping("/orderDeliveryFile/{fileId}")
+  public ResponseEntity<Map<String, Boolean>> deleteOrderDeliveryFiles(@PathVariable long fileId) {
+    OrderDeliveryDocument orderDeliveryDocument =
+        orderDeliveryDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Items File " + fileId + " does not exist."));
+
+    orderDeliveryDocumentRepository.delete(orderDeliveryDocument);
+
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("deleted", Boolean.TRUE);
+    return ResponseEntity.ok(response);
+  }
 }

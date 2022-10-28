@@ -1,7 +1,7 @@
 package com.km.assignment.controller;
 
 import com.km.assignment.exception.ResourceNotFoundException;
-import com.km.assignment.model.Employee_Document;
+import com.km.assignment.model.EmployeeDocument;
 import com.km.assignment.payload.Response;
 import com.km.assignment.payload.ResponseAllFiles;
 import com.km.assignment.repository.EmployeeDocumentRepository;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,50 +19,77 @@ import java.util.Map;
 @RequestMapping("/employee/files/")
 public class EmployeeDocumentController {
 
-    @Autowired
-    private EmployeeDocumentRepository employeeDocumentRepository;
+  @Autowired private EmployeeDocumentRepository employeeDocumentRepository;
 
-    @Autowired
-    private EmployeeDocumentFileService employeeDocumentFileService;
+  @Autowired private EmployeeDocumentFileService employeeDocumentFileService;
 
-    //get all employee documents
-    @GetMapping("/employeeFilesList")
-    public List<ResponseAllFiles> getAllEmployeeDocuments(){
-        return employeeDocumentFileService.getEmployeeAllFileDocuments();
-    }
+  // get all employee documents
+  @GetMapping("/employeeFilesList")
+  public List<ResponseAllFiles> getAllEmployeeDocuments() {
+    return employeeDocumentFileService.getEmployeeAllFileDocuments();
+  }
 
-    //upload files
-    @PostMapping("/upload")
-    public Response uploadEmployeeFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String category,@RequestParam("description") String description, @RequestParam("author") String author) {
-        Employee_Document employeeDocument = employeeDocumentFileService.storeFile(file, category, description, author);
+  // upload files
+  @PostMapping("/uploadEmployeeFiles")
+  public Response uploadEmployeeFile(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-        String salesFileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(employeeDocument.getEmployeeDocumentFileName())
-                .toUriString();
+    EmployeeDocument employeeDocument =
+        employeeDocumentFileService.uploadEmployeeDocument(file, category, description, author);
 
-        return new Response(employeeDocument.getEmployeeDocumentFileName(),employeeDocument.getCategory(),employeeDocument.getDescription(),salesFileDownloadUri,file.getContentType(),file.getSize());
-    }
+    return new Response(
+        employeeDocument.getEmployeeDocumentFileName(),
+        category,
+        description,
+        employeeDocument.getUri(),
+        employeeDocument.getFileType(),
+        employeeDocument.getFileSize());
+  }
 
-    //get file by id
-    @GetMapping("/employeeFile/{fileId}")
-    public ResponseEntity<Employee_Document> getEmployeeFileById(@PathVariable Long fileId){
-        Employee_Document employeeDocument = employeeDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Items File " + fileId +" does not exist."));
+  // get file by id
+  @GetMapping("/employeeFile/{fileId}")
+  public ResponseEntity<EmployeeDocument> getEmployeeFileById(@PathVariable Long fileId) {
+    EmployeeDocument employeeDocument =
+        employeeDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Items File " + fileId + " does not exist."));
 
-        return ResponseEntity.ok(employeeDocument);
-    }
+    return ResponseEntity.ok(employeeDocument);
+  }
 
-    //delete files
-    @DeleteMapping("/employeeFile/{fileId}")
-    public ResponseEntity<Map<String,Boolean>> deleteEmployeeFiles(@PathVariable long fileId){
-        Employee_Document employeeDocument = employeeDocumentRepository.findById(fileId)
-                .orElseThrow(()-> new ResourceNotFoundException("Items File " + fileId +" does not exist."));
+  // update files
+  @PutMapping("/employeeFile/{fileId}")
+  public ResponseEntity<EmployeeDocument> updateEmployeeFiles(
+      @PathVariable Long fileId,
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("category") String category,
+      @RequestParam("description") String description,
+      @RequestParam("author") String author) {
 
-        employeeDocumentRepository.delete(employeeDocument);
+    EmployeeDocument updatedEmployeeFile =
+        employeeDocumentFileService.updateEmployeeFiles(
+            fileId, file, category, description, author);
 
-        Map<String,Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
-    }
+    return ResponseEntity.ok(updatedEmployeeFile);
+  }
+
+  // delete files
+  @DeleteMapping("/employeeFile/{fileId}")
+  public ResponseEntity<Map<String, Boolean>> deleteEmployeeFiles(@PathVariable long fileId) {
+    EmployeeDocument employeeDocument =
+        employeeDocumentRepository
+            .findById(fileId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Items File " + fileId + " does not exist."));
+
+    employeeDocumentRepository.delete(employeeDocument);
+
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("deleted", Boolean.TRUE);
+    return ResponseEntity.ok(response);
+  }
 }
