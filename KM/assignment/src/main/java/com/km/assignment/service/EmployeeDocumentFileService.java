@@ -66,6 +66,7 @@ public class EmployeeDocumentFileService {
     List<ResponseAllFiles> allEmployeeFiles = new ArrayList<>();
     for (EmployeeDocument employeeDocument : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
+      responseAllFile.setId(employeeDocument.getId());
       responseAllFile.setDate(employeeDocument.getDateTime());
       responseAllFile.setFileName(employeeDocument.getEmployeeDocumentFileName());
       responseAllFile.setCategory(employeeDocument.getCategory());
@@ -82,7 +83,7 @@ public class EmployeeDocumentFileService {
 
   public EmployeeDocument updateEmployeeFiles(
       Long fileId, MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     EmployeeDocument employeeDocument =
         employeeDocumentRepository
             .findById(fileId)
@@ -107,7 +108,7 @@ public class EmployeeDocumentFileService {
 
   public EmployeeDocument uploadEmployeeDocument(
       MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     try {
       file.transferTo(new File(filePath));
     } catch (IOException e) {

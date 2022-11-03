@@ -66,6 +66,7 @@ public class OrderDeliveryDocumentFileService {
     List<ResponseAllFiles> allItemFiles = new ArrayList<>();
     for (OrderDeliveryDocument orderDeliveryDocument : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
+      responseAllFile.setId(orderDeliveryDocument.getId());
       responseAllFile.setDate(orderDeliveryDocument.getDateTime());
       responseAllFile.setFileName(orderDeliveryDocument.getOrderDeliveryDocumentFileName());
       responseAllFile.setCategory(orderDeliveryDocument.getCategory());
@@ -82,7 +83,7 @@ public class OrderDeliveryDocumentFileService {
 
   public OrderDeliveryDocument updateOrderDeliveryFiles(
       Long fileId, MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     OrderDeliveryDocument orderDeliveryDocument =
         orderDeliveryDocumentRepository
             .findById(fileId)
@@ -108,7 +109,7 @@ public class OrderDeliveryDocumentFileService {
 
   public OrderDeliveryDocument uploadOrderDeliveryDocument(
       MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     try {
       file.transferTo(new File(filePath));
     } catch (IOException e) {

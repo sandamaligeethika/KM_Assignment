@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ResponseAllFiles {
 
+    private long id;
     private Date date;
     private String fileName;
 
@@ -18,7 +19,8 @@ public class ResponseAllFiles {
 
     }
 
-    public ResponseAllFiles(Date date, String fileName, String category, String description, String salesPerson, String fileType, long size) {
+    public ResponseAllFiles(long id, Date date, String fileName, String category, String description, String salesPerson, String fileType, long size) {
+        this.id = id;
         this.date = date;
         this.fileName = fileName;
         this.category = category;
@@ -30,6 +32,14 @@ public class ResponseAllFiles {
 
     public Date getDate() {
         return date;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setDate(Date date) {

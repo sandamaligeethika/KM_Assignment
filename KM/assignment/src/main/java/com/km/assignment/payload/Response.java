@@ -1,6 +1,8 @@
 package com.km.assignment.payload;
 
 public class Response {
+
+    private int id;
     private String fileName;
 
     private String category;
@@ -10,7 +12,8 @@ public class Response {
     private String fileType;
     private long size;
 
-    public Response(String fileName, String category, String description, String fileUri, String fileType, long size) {
+    public Response( String fileName, String category, String description, String fileUri, String fileType, long size) {
+
         this.fileName = fileName;
         this.category = category;
         this.description = description;
@@ -18,6 +21,8 @@ public class Response {
         this.fileType = fileType;
         this.size = size;
     }
+
+
 
     public String getFileName() {
         return fileName;
