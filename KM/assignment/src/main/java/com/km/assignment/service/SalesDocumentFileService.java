@@ -66,6 +66,7 @@ public class SalesDocumentFileService {
     List<ResponseAllFiles> allFiles = new ArrayList<>();
     for (SalesDocument document : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
+      responseAllFile.setId(document.getId());
       responseAllFile.setDate(document.getDateTime());
       responseAllFile.setFileName(document.getSalesDocumentFileName());
       responseAllFile.setCategory(document.getCategory());
@@ -107,7 +108,7 @@ public class SalesDocumentFileService {
 
   public SalesDocument uploadSalesDocument(
       MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     try {
       file.transferTo(new File(filePath));
     } catch (IOException e) {

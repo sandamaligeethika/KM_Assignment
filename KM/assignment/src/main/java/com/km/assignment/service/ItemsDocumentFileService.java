@@ -107,7 +107,7 @@ public class ItemsDocumentFileService {
 
   public ItemsDocument uploadItemDocument(
       MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     try {
       file.transferTo(new File(filePath));
     } catch (IOException e) {

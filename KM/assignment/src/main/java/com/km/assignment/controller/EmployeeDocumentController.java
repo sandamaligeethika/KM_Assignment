@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/employee/files/")
 public class EmployeeDocumentController {
@@ -30,7 +31,7 @@ public class EmployeeDocumentController {
   }
 
   // upload files
-  @PostMapping("/uploadEmployeeFiles")
+  @PostMapping(value = "/uploadEmployeeFiles", consumes = {"multipart/form-data"})
   public Response uploadEmployeeFile(
       @RequestParam("file") MultipartFile file,
       @RequestParam("category") String category,
@@ -62,7 +63,7 @@ public class EmployeeDocumentController {
   }
 
   // update files
-  @PutMapping("/employeeFile/{fileId}")
+  @PatchMapping(value = "/employeeFile/{fileId}", consumes = {"*"})
   public ResponseEntity<EmployeeDocument> updateEmployeeFiles(
       @PathVariable Long fileId,
       @RequestParam("file") MultipartFile file,
