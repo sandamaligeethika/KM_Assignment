@@ -31,7 +31,7 @@ public class OrderDeliveryDocumentController {
   }
 
   // upload files
-  @PostMapping("/uploadOrderDeliveryFiles")
+  @PostMapping(value = "/uploadOrderDeliveryFiles", consumes = {"multipart/form-data"})
   public Response uploadOrderDeliveryFile(
       @RequestParam("file") MultipartFile file,
       @RequestParam("category") String category,
@@ -43,7 +43,7 @@ public class OrderDeliveryDocumentController {
             file, category, description, author);
 
     return new Response(
-        orderDeliveryDocuments.getOrderDeliveryDocumentFileName(),
+        orderDeliveryDocuments.getFileName(),
         category,
         description,
         orderDeliveryDocuments.getUri(),
@@ -66,7 +66,7 @@ public class OrderDeliveryDocumentController {
   }
 
   // update files
-  @PutMapping("/orderDeliveryFile/{fileId}")
+  @PatchMapping(value = "/orderDeliveryFile/{fileId}", consumes = {"*"})
   public ResponseEntity<OrderDeliveryDocument> updateOrderDeliveryFiles(
       @PathVariable Long fileId,
       @RequestParam("file") MultipartFile file,
@@ -95,5 +95,12 @@ public class OrderDeliveryDocumentController {
     Map<String, Boolean> response = new HashMap<>();
     response.put("deleted", Boolean.TRUE);
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/file/name/{name}")
+  public ResponseEntity<List<OrderDeliveryDocument>> getOrderFileByName(@PathVariable String name) {
+
+    List<OrderDeliveryDocument> orderDeliveryDocuments = orderDeliveryDocumentFileService.findOrderFilesByName(name);
+    return ResponseEntity.ok(orderDeliveryDocuments);
   }
 }

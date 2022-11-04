@@ -67,12 +67,12 @@ public class EmployeeDocumentFileService {
     for (EmployeeDocument employeeDocument : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
       responseAllFile.setId(employeeDocument.getId());
-      responseAllFile.setDate(employeeDocument.getDateTime());
-      responseAllFile.setFileName(employeeDocument.getEmployeeDocumentFileName());
+      responseAllFile.setDate(employeeDocument.getDate());
+      responseAllFile.setFileName(employeeDocument.getFileName());
       responseAllFile.setCategory(employeeDocument.getCategory());
       responseAllFile.setDescription(employeeDocument.getDescription());
       responseAllFile.setFileType(employeeDocument.getFileType());
-      responseAllFile.setSalesPerson(employeeDocument.getEmployeeManagementPerson());
+      responseAllFile.setSalesPerson(employeeDocument.getSalesPerson());
       responseAllFile.setSize(employeeDocument.getFileSize());
 
       allEmployeeFiles.add(responseAllFile);
@@ -93,13 +93,13 @@ public class EmployeeDocumentFileService {
     String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
     employeeDocument.setId(fileId);
-    employeeDocument.setDateTime(new Date());
+    employeeDocument.setDate(new Date());
     employeeDocument.setFileType(file.getContentType());
-    employeeDocument.setEmployeeDocumentFileName(fileName);
+    employeeDocument.setFileName(fileName);
     employeeDocument.setFileSize(file.getSize());
     employeeDocument.setCategory(category);
     employeeDocument.setDescription(description);
-    employeeDocument.setEmployeeManagementPerson(author);
+    employeeDocument.setSalesPerson(author);
     employeeDocument.setUri(filePath);
 
     EmployeeDocument updatedEmployeeFile = employeeDocumentRepository.save(employeeDocument);
@@ -116,5 +116,9 @@ public class EmployeeDocumentFileService {
     }
     EmployeeDocument employeeDocument = storeFile(file, category, description, author, filePath);
     return employeeDocument;
+  }
+
+  public List<EmployeeDocument> findEmployeeFilesByName(String name) {
+    return employeeDocumentRepository.findByFileNameContaining(name);
   }
 }

@@ -66,12 +66,13 @@ public class ItemsDocumentFileService {
     List<ResponseAllFiles> allItemFiles = new ArrayList<>();
     for (ItemsDocument itemDocument : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
-      responseAllFile.setDate(itemDocument.getDateTime());
-      responseAllFile.setFileName(itemDocument.getItemsDocumentFileName());
+      responseAllFile.setId(itemDocument.getId());
+      responseAllFile.setDate(itemDocument.getDate());
+      responseAllFile.setFileName(itemDocument.getFileName());
       responseAllFile.setCategory(itemDocument.getCategory());
       responseAllFile.setDescription(itemDocument.getDescription());
       responseAllFile.setFileType(itemDocument.getFileType());
-      responseAllFile.setSalesPerson(itemDocument.getItemManagementPerson());
+      responseAllFile.setSalesPerson(itemDocument.getSalesPerson());
       responseAllFile.setSize(itemDocument.getFileSize());
 
       allItemFiles.add(responseAllFile);
@@ -82,7 +83,7 @@ public class ItemsDocumentFileService {
 
   public ItemsDocument updateItemFiles(
       Long fileId, MultipartFile file, String category, String description, String author) {
-    String filePath = "C:/Users/sgeet/Desktop/Document_Store/" + file.getOriginalFilename();
+    String filePath = "C:\\Users\\himas\\OneDrive\\Desktop\\files\\" + file.getOriginalFilename();
     ItemsDocument itemsDocument =
         itemsDocumentRepository
             .findById(fileId)
@@ -92,13 +93,13 @@ public class ItemsDocumentFileService {
     String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
     itemsDocument.setId(fileId);
-    itemsDocument.setDateTime(new Date());
+    itemsDocument.setDate(new Date());
     itemsDocument.setFileType(file.getContentType());
-    itemsDocument.setItemsDocumentFileName(fileName);
+    itemsDocument.setFileName(fileName);
     itemsDocument.setFileSize(file.getSize());
     itemsDocument.setCategory(category);
     itemsDocument.setDescription(description);
-    itemsDocument.setItemManagementPerson(author);
+    itemsDocument.setSalesPerson(author);
     itemsDocument.setUri(filePath);
 
     ItemsDocument updatedItemFile = itemsDocumentRepository.save(itemsDocument);
@@ -115,5 +116,9 @@ public class ItemsDocumentFileService {
     }
     ItemsDocument itemsDocument = storeFile(file, category, description, author, filePath);
     return itemsDocument;
+  }
+
+  public List<ItemsDocument> findItemFilesByName(String name) {
+    return itemsDocumentRepository.findByFileNameContaining(name);
   }
 }

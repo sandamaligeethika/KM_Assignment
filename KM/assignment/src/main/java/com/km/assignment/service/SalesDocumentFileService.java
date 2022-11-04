@@ -67,8 +67,8 @@ public class SalesDocumentFileService {
     for (SalesDocument document : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
       responseAllFile.setId(document.getId());
-      responseAllFile.setDate(document.getDateTime());
-      responseAllFile.setFileName(document.getSalesDocumentFileName());
+      responseAllFile.setDate(document.getDate());
+      responseAllFile.setFileName(document.getFileName());
       responseAllFile.setCategory(document.getCategory());
       responseAllFile.setDescription(document.getDescription());
       responseAllFile.setFileType(document.getFileType());
@@ -93,9 +93,9 @@ public class SalesDocumentFileService {
     String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
     salesDocument.setId(fileId);
-    salesDocument.setDateTime(new Date());
+    salesDocument.setDate(new Date());
     salesDocument.setFileType(file.getContentType());
-    salesDocument.setSalesDocumentFileName(fileName);
+    salesDocument.setFileName(fileName);
     salesDocument.setFileSize(file.getSize());
     salesDocument.setCategory(category);
     salesDocument.setDescription(description);
@@ -116,5 +116,9 @@ public class SalesDocumentFileService {
     }
     SalesDocument salesDocument = storeFile(file, category, description, author, filePath);
     return salesDocument;
+  }
+
+  public List<SalesDocument> findFilesByName(String name) {
+    return salesDocumentRepository.findByFileNameContaining(name);
   }
 }

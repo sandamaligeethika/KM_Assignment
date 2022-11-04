@@ -42,7 +42,7 @@ public class EmployeeDocumentController {
         employeeDocumentFileService.uploadEmployeeDocument(file, category, description, author);
 
     return new Response(
-        employeeDocument.getEmployeeDocumentFileName(),
+        employeeDocument.getFileName(),
         category,
         description,
         employeeDocument.getUri(),
@@ -93,4 +93,13 @@ public class EmployeeDocumentController {
     response.put("deleted", Boolean.TRUE);
     return ResponseEntity.ok(response);
   }
+
+  @GetMapping(value = "/file/name/{name}", consumes = {"*"})
+  public ResponseEntity<List<EmployeeDocument>> getEmployeeFileByName(@PathVariable String name) {
+
+    List<EmployeeDocument> employeeDocuments = employeeDocumentFileService.findEmployeeFilesByName(name);
+    return ResponseEntity.ok(employeeDocuments);
+  }
+
+
 }

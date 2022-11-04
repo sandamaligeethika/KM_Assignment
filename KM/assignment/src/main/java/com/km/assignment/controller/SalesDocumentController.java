@@ -29,7 +29,7 @@ public class SalesDocumentController {
   }
 
   // upload files
-  @PostMapping("/upload")
+  @PostMapping(value = "/upload" , consumes = {"multipart/form-data"})
   public Response uploadSalesFile(
       @RequestParam("file") MultipartFile file,
       @RequestParam("category") String category,
@@ -40,7 +40,7 @@ public class SalesDocumentController {
         salesDocumentFileService.uploadSalesDocument(file, category, description, author);
 
     return new Response(
-        salesDocument.getSalesDocumentFileName(),
+        salesDocument.getFileName(),
         category,
         description,
         salesDocument.getUri(),
@@ -73,7 +73,7 @@ public class SalesDocumentController {
   }*/
 
   // update files
-  @PutMapping("/file/{fileId}")
+  @PatchMapping(value = "/file/{fileId}", consumes = {"*"})
   public ResponseEntity<SalesDocument> updateSalesFiles(
       @PathVariable Long fileId,
       @RequestParam("file") MultipartFile file,
@@ -101,5 +101,12 @@ public class SalesDocumentController {
     Map<String, Boolean> response = new HashMap<>();
     response.put("deleted", Boolean.TRUE);
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/file/name/{name}")
+  public ResponseEntity<List<SalesDocument>> getFileByName(@PathVariable String name) {
+
+    List<SalesDocument> documents = salesDocumentFileService.findFilesByName(name);
+    return ResponseEntity.ok(documents);
   }
 }

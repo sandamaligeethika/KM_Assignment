@@ -11,13 +11,13 @@ public class SalesDocument {
   private long id;
 
   @Column(name = "date")
-  private Date dateTime;
+  private Date date;
 
   @Column(name = "file_type")
   private String fileType;
 
   @Column(name = "file_name")
-  private String salesDocumentFileName;
+  private String fileName;
 
   @Column(name = "sales_category")
   private String category;
@@ -37,17 +37,17 @@ public class SalesDocument {
   public SalesDocument() {}
 
   public SalesDocument(
-      Date dateTime,
+      Date date,
       String fileType,
-      String salesDocumentFileName,
+      String fileName,
       String category,
       String description,
       long fileSize,
       String salesPerson,
       String uri) {
-    this.dateTime = dateTime;
+    this.date = date;
     this.fileType = fileType;
-    this.salesDocumentFileName = salesDocumentFileName;
+    this.fileName = fileName;
     this.category = category;
     this.description = description;
     this.fileSize = fileSize;
@@ -63,12 +63,12 @@ public class SalesDocument {
     this.id = id;
   }
 
-  public Date getDateTime() {
-    return dateTime;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDateTime(Date dateTime) {
-    this.dateTime = dateTime;
+  public void setDate(Date dateTime) {
+    this.date = dateTime;
   }
 
   public String getFileType() {
@@ -79,12 +79,12 @@ public class SalesDocument {
     this.fileType = fileType;
   }
 
-  public String getSalesDocumentFileName() {
-    return salesDocumentFileName;
+  public String getFileName() {
+    return fileName;
   }
 
-  public void setSalesDocumentFileName(String salesDocumentFileName) {
-    this.salesDocumentFileName = salesDocumentFileName;
+  public void setFileName(String salesDocumentFileName) {
+    this.fileName = salesDocumentFileName;
   }
 
   public String getCategory() {

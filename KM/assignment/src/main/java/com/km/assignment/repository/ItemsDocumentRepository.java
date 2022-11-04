@@ -9,4 +9,6 @@ public interface ItemsDocumentRepository extends JpaRepository<ItemsDocument,Lon
 
     @Override
     List<ItemsDocument> findAll();
+
+    List<ItemsDocument> findByFileNameContaining(String name);
 }

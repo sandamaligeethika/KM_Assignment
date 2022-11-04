@@ -12,13 +12,13 @@ public class ItemsDocument {
   private long id;
 
   @Column(name = "date")
-  private Date dateTime;
+  private Date date;
 
   @Column(name = "item_file_type")
   private String fileType;
 
   @Column(name = "item_file_name")
-  private String itemsDocumentFileName;
+  private String fileName;
 
   @Column(name = "item_category")
   private String category;
@@ -30,7 +30,7 @@ public class ItemsDocument {
   private long fileSize;
 
   @Column(name = "items_person")
-  private String itemManagementPerson;
+  private String salesPerson;
 
   @Column(name = "item_file")
   private String uri;
@@ -38,21 +38,21 @@ public class ItemsDocument {
   public ItemsDocument() {}
 
   public ItemsDocument(
-      Date dateTime,
+      Date date,
       String fileType,
-      String itemsDocumentFileName,
+      String fileName,
       String category,
       String description,
       long fileSize,
-      String itemManagementPerson,
+      String salesPerson,
       String uri) {
-    this.dateTime = dateTime;
+    this.date = date;
     this.fileType = fileType;
-    this.itemsDocumentFileName = itemsDocumentFileName;
+    this.fileName = fileName;
     this.category = category;
     this.description = description;
     this.fileSize = fileSize;
-    this.itemManagementPerson = itemManagementPerson;
+    this.salesPerson = salesPerson;
     this.uri = uri;
   }
 
@@ -64,12 +64,12 @@ public class ItemsDocument {
     this.id = id;
   }
 
-  public Date getDateTime() {
-    return dateTime;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDateTime(Date dateTime) {
-    this.dateTime = dateTime;
+  public void setDate(Date dateTime) {
+    this.date = dateTime;
   }
 
   public String getFileType() {
@@ -80,12 +80,12 @@ public class ItemsDocument {
     this.fileType = fileType;
   }
 
-  public String getItemsDocumentFileName() {
-    return itemsDocumentFileName;
+  public String getFileName() {
+    return fileName;
   }
 
-  public void setItemsDocumentFileName(String itemsDocumentFileName) {
-    this.itemsDocumentFileName = itemsDocumentFileName;
+  public void setFileName(String itemsDocumentFileName) {
+    this.fileName = itemsDocumentFileName;
   }
 
   public String getCategory() {
@@ -112,12 +112,12 @@ public class ItemsDocument {
     this.fileSize = fileSize;
   }
 
-  public String getItemManagementPerson() {
-    return itemManagementPerson;
+  public String getSalesPerson() {
+    return salesPerson;
   }
 
-  public void setItemManagementPerson(String itemManagementPerson) {
-    this.itemManagementPerson = itemManagementPerson;
+  public void setSalesPerson(String itemManagementPerson) {
+    this.salesPerson = itemManagementPerson;
   }
 
   public String getUri() {
