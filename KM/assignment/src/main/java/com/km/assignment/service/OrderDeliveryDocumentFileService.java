@@ -67,12 +67,12 @@ public class OrderDeliveryDocumentFileService {
     for (OrderDeliveryDocument orderDeliveryDocument : files) {
       ResponseAllFiles responseAllFile = new ResponseAllFiles();
       responseAllFile.setId(orderDeliveryDocument.getId());
-      responseAllFile.setDate(orderDeliveryDocument.getDateTime());
-      responseAllFile.setFileName(orderDeliveryDocument.getOrderDeliveryDocumentFileName());
+      responseAllFile.setDate(orderDeliveryDocument.getDate());
+      responseAllFile.setFileName(orderDeliveryDocument.getFileName());
       responseAllFile.setCategory(orderDeliveryDocument.getCategory());
       responseAllFile.setDescription(orderDeliveryDocument.getDescription());
       responseAllFile.setFileType(orderDeliveryDocument.getFileType());
-      responseAllFile.setSalesPerson(orderDeliveryDocument.getOrderDeliveryPerson());
+      responseAllFile.setSalesPerson(orderDeliveryDocument.getSalesPerson());
       responseAllFile.setSize(orderDeliveryDocument.getFileSize());
 
       allItemFiles.add(responseAllFile);
@@ -93,13 +93,13 @@ public class OrderDeliveryDocumentFileService {
     String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
     orderDeliveryDocument.setId(fileId);
-    orderDeliveryDocument.setDateTime(new Date());
+    orderDeliveryDocument.setDate(new Date());
     orderDeliveryDocument.setFileType(file.getContentType());
-    orderDeliveryDocument.setOrderDeliveryDocumentFileName(fileName);
+    orderDeliveryDocument.setFileName(fileName);
     orderDeliveryDocument.setFileSize(file.getSize());
     orderDeliveryDocument.setCategory(category);
     orderDeliveryDocument.setDescription(description);
-    orderDeliveryDocument.setOrderDeliveryPerson(author);
+    orderDeliveryDocument.setSalesPerson(author);
     orderDeliveryDocument.setUri(filePath);
 
     OrderDeliveryDocument updatedOrderDeliveryFile =
@@ -118,5 +118,9 @@ public class OrderDeliveryDocumentFileService {
     OrderDeliveryDocument orderDeliveryDocument =
         storeFile(file, category, description, author, filePath);
     return orderDeliveryDocument;
+  }
+
+  public List<OrderDeliveryDocument> findOrderFilesByName(String name) {
+    return orderDeliveryDocumentRepository.findByFileNameContaining(name);
   }
 }

@@ -12,13 +12,13 @@ public class EmployeeDocument {
   private long id;
 
   @Column(name = "date")
-  private Date dateTime;
+  private Date date;
 
   @Column(name = "employee_file_type")
   private String fileType;
 
   @Column(name = "employee_file_name")
-  private String employeeDocumentFileName;
+  private String fileName;
 
   @Column(name = "employee_category")
   private String category;
@@ -30,7 +30,7 @@ public class EmployeeDocument {
   private long fileSize;
 
   @Column(name = "employee_person")
-  private String employeeManagementPerson;
+  private String salesPerson;
 
   @Column(name = "employee_file")
   private String uri;
@@ -38,21 +38,21 @@ public class EmployeeDocument {
   public EmployeeDocument() {}
 
   public EmployeeDocument(
-      Date dateTime,
+      Date date,
       String fileType,
-      String employeeDocumentFileName,
+      String fileName,
       String category,
       String description,
       long fileSize,
-      String employeeManagementPerson,
+      String salesPerson,
       String uri) {
-    this.dateTime = dateTime;
+    this.date = date;
     this.fileType = fileType;
-    this.employeeDocumentFileName = employeeDocumentFileName;
+    this.fileName = fileName;
     this.category = category;
     this.description = description;
     this.fileSize = fileSize;
-    this.employeeManagementPerson = employeeManagementPerson;
+    this.salesPerson = salesPerson;
     this.uri = uri;
   }
 
@@ -64,12 +64,12 @@ public class EmployeeDocument {
     this.id = id;
   }
 
-  public Date getDateTime() {
-    return dateTime;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDateTime(Date dateTime) {
-    this.dateTime = dateTime;
+  public void setDate(Date dateTime) {
+    this.date = dateTime;
   }
 
   public String getFileType() {
@@ -80,12 +80,12 @@ public class EmployeeDocument {
     this.fileType = fileType;
   }
 
-  public String getEmployeeDocumentFileName() {
-    return employeeDocumentFileName;
+  public String getFileName() {
+    return fileName;
   }
 
-  public void setEmployeeDocumentFileName(String employeeDocumentFileName) {
-    this.employeeDocumentFileName = employeeDocumentFileName;
+  public void setFileName(String employeeDocumentFileName) {
+    this.fileName = employeeDocumentFileName;
   }
 
   public String getCategory() {
@@ -112,12 +112,12 @@ public class EmployeeDocument {
     this.fileSize = fileSize;
   }
 
-  public String getEmployeeManagementPerson() {
-    return employeeManagementPerson;
+  public String getSalesPerson() {
+    return salesPerson;
   }
 
-  public void setEmployeeManagementPerson(String employeeManagementPerson) {
-    this.employeeManagementPerson = employeeManagementPerson;
+  public void setSalesPerson(String employeeManagementPerson) {
+    this.salesPerson = employeeManagementPerson;
   }
 
   public String getUri() {

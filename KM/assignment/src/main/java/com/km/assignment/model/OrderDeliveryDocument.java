@@ -12,13 +12,13 @@ public class OrderDeliveryDocument {
   private long id;
 
   @Column(name = "date")
-  private Date dateTime;
+  private Date date;
 
   @Column(name = "file_type")
   private String fileType;
 
   @Column(name = "file_name")
-  private String orderDeliveryDocumentFileName;
+  private String fileName;
 
   @Column(name = "order_delivery_category")
   private String category;
@@ -30,7 +30,7 @@ public class OrderDeliveryDocument {
   private long fileSize;
 
   @Column(name = "order_delivery_person")
-  private String orderDeliveryPerson;
+  private String salesPerson;
 
   @Column(name = "file")
   private String uri;
@@ -38,21 +38,21 @@ public class OrderDeliveryDocument {
   public OrderDeliveryDocument() {}
 
   public OrderDeliveryDocument(
-      Date dateTime,
+      Date date,
       String fileType,
-      String orderDeliveryDocumentFileName,
+      String fileName,
       String category,
       String description,
       long fileSize,
-      String orderDeliveryPerson,
+      String salesPerson,
       String uri) {
-    this.dateTime = dateTime;
+    this.date = date;
     this.fileType = fileType;
-    this.orderDeliveryDocumentFileName = orderDeliveryDocumentFileName;
+    this.fileName = fileName;
     this.category = category;
     this.description = description;
     this.fileSize = fileSize;
-    this.orderDeliveryPerson = orderDeliveryPerson;
+    this.salesPerson = salesPerson;
     this.uri = uri;
   }
 
@@ -64,12 +64,12 @@ public class OrderDeliveryDocument {
     this.id = id;
   }
 
-  public Date getDateTime() {
-    return dateTime;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDateTime(Date dateTime) {
-    this.dateTime = dateTime;
+  public void setDate(Date dateTime) {
+    this.date = dateTime;
   }
 
   public String getFileType() {
@@ -80,12 +80,12 @@ public class OrderDeliveryDocument {
     this.fileType = fileType;
   }
 
-  public String getOrderDeliveryDocumentFileName() {
-    return orderDeliveryDocumentFileName;
+  public String getFileName() {
+    return fileName;
   }
 
-  public void setOrderDeliveryDocumentFileName(String orderDeliveryDocumentFileName) {
-    this.orderDeliveryDocumentFileName = orderDeliveryDocumentFileName;
+  public void setFileName(String orderDeliveryDocumentFileName) {
+    this.fileName = orderDeliveryDocumentFileName;
   }
 
   public String getCategory() {
@@ -112,12 +112,12 @@ public class OrderDeliveryDocument {
     this.fileSize = fileSize;
   }
 
-  public String getOrderDeliveryPerson() {
-    return orderDeliveryPerson;
+  public String getSalesPerson() {
+    return salesPerson;
   }
 
-  public void setOrderDeliveryPerson(String orderDeliveryPerson) {
-    this.orderDeliveryPerson = orderDeliveryPerson;
+  public void setSalesPerson(String orderDeliveryPerson) {
+    this.salesPerson = orderDeliveryPerson;
   }
 
   public String getUri() {

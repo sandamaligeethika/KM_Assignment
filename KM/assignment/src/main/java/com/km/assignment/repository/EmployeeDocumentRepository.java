@@ -9,4 +9,6 @@ public interface EmployeeDocumentRepository extends JpaRepository<EmployeeDocume
 
     @Override
     List<EmployeeDocument> findAll();
+
+    List<EmployeeDocument> findByFileNameContaining(String name);
 }

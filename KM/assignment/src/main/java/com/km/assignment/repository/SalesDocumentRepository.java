@@ -11,6 +11,8 @@ public interface SalesDocumentRepository extends JpaRepository<SalesDocument,Lon
 
     @Override
     List<SalesDocument> findAll();
+
+    List<SalesDocument> findByFileNameContaining(String name);
 /*
     @Query("SELECT s FROM sales_doc s WHERE s.file_name LIKE %file%")
     Optional<List<Sales_Document>> findByFileLike(@Param("file") String file);*/

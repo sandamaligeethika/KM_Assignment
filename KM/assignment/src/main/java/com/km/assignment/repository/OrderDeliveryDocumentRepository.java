@@ -9,4 +9,6 @@ public interface OrderDeliveryDocumentRepository extends JpaRepository<OrderDeli
 
     @Override
     List<OrderDeliveryDocument> findAll();
+
+    List<OrderDeliveryDocument> findByFileNameContaining(String name);
 }

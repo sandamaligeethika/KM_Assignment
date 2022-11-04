@@ -31,7 +31,7 @@ public class ItemsDocumentController {
   }
 
   // upload files
-  @PostMapping("/uploadItems")
+  @PostMapping(value = "/uploadItems", consumes = {"multipart/form-data"})
   public Response uploadItemsFile(
       @RequestParam("file") MultipartFile file,
       @RequestParam("category") String category,
@@ -42,7 +42,7 @@ public class ItemsDocumentController {
         itemsDocumentFileService.uploadItemDocument(file, category, description, author);
 
     return new Response(
-        itemsDocument.getItemsDocumentFileName(),
+        itemsDocument.getFileName(),
         category,
         description,
         itemsDocument.getUri(),
@@ -62,7 +62,7 @@ public class ItemsDocumentController {
     return ResponseEntity.ok(itemsDocument);
   }
 
-  @PutMapping("/updateItemFile/{fileId}")
+  @PatchMapping(value = "/updateItemFile/{fileId}", consumes = {"*"})
   public ResponseEntity<ItemsDocument> updateItemFiles(
       @PathVariable Long fileId,
       @RequestParam("file") MultipartFile file,
@@ -90,5 +90,12 @@ public class ItemsDocumentController {
     Map<String, Boolean> response = new HashMap<>();
     response.put("deleted", Boolean.TRUE);
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/file/name/{name}")
+  public ResponseEntity<List<ItemsDocument>> getItemFileByName(@PathVariable String name) {
+
+    List<ItemsDocument> itemsDocuments = itemsDocumentFileService.findItemFilesByName(name);
+    return ResponseEntity.ok(itemsDocuments);
   }
 }
